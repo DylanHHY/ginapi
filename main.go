@@ -5,33 +5,39 @@ import (
 )
 
 func main() {
-	router := gin.Default()
-	router.GET("/rooms", func(c *gin.Context) {
-		res := []string{"foo", "bar"}
-		c.JSON(200, res)
+	r := gin.Default()
+	r.GET("/path/:id", func(c *gin.Context) {
+		id := c.Param("id")
+		user := c.DefaultQuery("user", "tom")
+		pwd := c.Query("pwd")
+		c.JSON(200, gin.H{
+			// "success": "true",
+			"id":   id,
+			"user": user,
+			"pwd":  pwd,
+		})
 	})
-	router.POST("/rooms", func(c *gin.Context) {
-		// id := c.Param("id")
-		res := []string{"Hello!!"}
-		c.JSON(200, res)
+	r.POST("/path", func(c *gin.Context) {
+		user := c.DefaultPostForm("user", "tom")
+		pwd := c.PostForm("pwd")
+		c.JSON(200, gin.H{
+			"user": user,
+			"pwd":  pwd,
+		})
 	})
-	router.POST("/rooms/:id", func(c *gin.Context) {
+	r.PUT("/path", func(c *gin.Context) {
+		user := c.DefaultPostForm("user", "tom")
+		pwd := c.PostForm("pwd")
+		c.JSON(200, gin.H{
+			"user": user,
+			"pwd":  pwd,
+		})
+	})
+	r.DELETE("/path/:id", func(c *gin.Context) {
 		id := c.Param("id")
 		c.JSON(200, gin.H{
 			"id": id,
 		})
 	})
-	router.PUT("/rooms/:id", func(c *gin.Context) {
-		id := c.Param("id")
-		c.JSON(200, gin.H{
-			"id": id,
-		})
-	})
-	router.DELETE("/rooms/:id", func(c *gin.Context) {
-		id := c.Param("id")
-		c.JSON(200, gin.H{
-			"id": id,
-		})
-	})
-	router.Run(":8000") // listen and serve on 0.0.0.0:8080
+	r.Run(":8000") // listen and serve on 0.0.0.0:8080
 }
