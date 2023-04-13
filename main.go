@@ -1,43 +1,22 @@
 package main
 
 import (
+	"goAPI/controllers"
+	"goAPI/initializers"
+
 	"github.com/gin-gonic/gin"
 )
 
+func init() {
+	initializers.ConnectToDB()
+}
 func main() {
 	r := gin.Default()
-	r.GET("/path/:id", func(c *gin.Context) {
-		id := c.Param("id")
-		user := c.DefaultQuery("user", "tom")
-		pwd := c.Query("pwd")
-		c.JSON(200, gin.H{
-			// "success": "true",
-			"id":   id,
-			"user": user,
-			"pwd":  pwd,
-		})
-	})
-	r.POST("/path", func(c *gin.Context) {
-		user := c.DefaultPostForm("user", "tom")
-		pwd := c.PostForm("pwd")
-		c.JSON(200, gin.H{
-			"user": user,
-			"pwd":  pwd,
-		})
-	})
-	r.PUT("/path", func(c *gin.Context) {
-		user := c.DefaultPostForm("user", "tom")
-		pwd := c.PostForm("pwd")
-		c.JSON(200, gin.H{
-			"user": user,
-			"pwd":  pwd,
-		})
-	})
-	r.DELETE("/path/:id", func(c *gin.Context) {
-		id := c.Param("id")
-		c.JSON(200, gin.H{
-			"id": id,
-		})
-	})
+	r.POST("/posts", controllers.PostsCreate)
+	r.GET("posts", controllers.PostsIndex)
+	r.GET("posts/:id", controllers.PostsShow)
+	r.PUT("posts/:id", controllers.PostsUpdate)
+	r.DELETE("posts/:id", controllers.PostsDelete)
+
 	r.Run(":8000") // listen and serve on 0.0.0.0:8080
 }
