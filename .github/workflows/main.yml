@@ -1,0 +1,18 @@
+name: Simple CI Workflow
+
+on:
+  push:
+    branches:
+      - 'dev-pro'
+
+jobs:
+  simple_job:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Run a simple shell script
+      run: |
+        echo "Hello, world!"
+        echo "This is a simple GitHub Actions workflow."
